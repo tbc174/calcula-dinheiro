@@ -1,0 +1,8 @@
+import type {Metadata} from 'next';
+import {headers} from 'next/headers';
+import config from '../config/publicacao.json';
+import {publicarHost,normalizarPublisher} from './publicacao.mjs';
+export async function metadataPagina(titulo:string,descricao:string,caminho:string):Promise<Metadata>{const h=await headers();const index=publicarHost(h.get('host'),config.origem);const url=config.origem+caminho;return {title:titulo,description:descricao,metadataBase:new URL(config.origem),alternates:{canonical:url},robots:{index,follow:index},openGraph:{title:titulo+' | Calcula Dinheiro',description:descricao,url,locale:'pt_BR',type:'website',siteName:'Calcula Dinheiro'},twitter:{card:'summary',title:titulo,description:descricao}}}
+export function metadataAds(){const id=normalizarPublisher(config.adsense.publisherId);return id&&['verificacao','ativo'].includes(config.adsense.modo)?{'google-adsense-account':id}:undefined}
+export function dadosEstruturados(titulo:string,descricao:string,caminho:string,ferramenta=false){const url=config.origem+caminho;return {'@context':'https://schema.org','@graph':[{ '@type':ferramenta?'WebApplication':'WebPage','@id':url+'#pagina',name:titulo,description:descricao,url,inLanguage:'pt-BR',isAccessibleForFree:true,...(ferramenta?{applicationCategory:'FinanceApplication',operatingSystem:'Any',browserRequirements:'Requer JavaScript para as simulações'}:{})},{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Calculadoras',item:config.origem+'/'},...(caminho==='/'?[]:[{'@type':'ListItem',position:2,name:titulo,item:url}])]}]}}
+export function serializarSchema(v:unknown){return JSON.stringify(v).replace(/</g,'\\u003c')}

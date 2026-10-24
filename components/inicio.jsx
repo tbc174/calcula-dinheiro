@@ -1,0 +1,19 @@
+'use client';
+import Link from './link';
+import {useState} from 'react';
+import {ArrowRight,ArrowUpRight,Percent,Wallet,TrendingUp} from 'lucide-react';
+import {ferramentas,moeda} from '../lib/ferramentas';
+import {porcentagem,lerNumero} from '../lib/contas.mjs';
+import {Campo,EscopoCampos,calcular} from './comum';
+
+const grupos=[
+ {titulo:'Na hora de comprar',classe:'comprar',nota:'Veja quanto a compra vai custar.',slugs:['porcentagem','a-vista-ou-parcelado'],Icon:Wallet},
+ {titulo:'Para juntar dinheiro',classe:'guardar',nota:'Um plano para o que você quer fazer.',slugs:['juros-compostos','quanto-guardar-por-mes'],Icon:TrendingUp},
+ {titulo:'Para comparar valores',classe:'comparar',nota:'Inflação e moedas, com a data da referência.',slugs:['correcao-ipca','conversor-de-moedas'],Icon:Percent}
+];
+function ContaRapida(){
+ const[preco,setPreco]=useState('200'),[desconto,setDesconto]=useState('15');
+ const{r,erro}=calcular(()=>porcentagem({modo:'ajuste',a:lerNumero(preco),b:lerNumero(desconto),operacao:'desconto'}));
+ return <section className="conta-rapida" aria-labelledby="conta-rapida-titulo"><div className="conta-rapida-topo"><span>Uma conta rápida</span><Percent size={24} aria-hidden="true"/></div><div className="conta-rapida-corpo"><h2 id="conta-rapida-titulo">Com desconto,<br/> fica quanto?</h2><EscopoCampos slug="inicio"><div className="field-row"><Campo label="Preço na etiqueta" prefix="R$" value={preco} onChange={setPreco}/><Campo label="Desconto (%)" value={desconto} onChange={setDesconto}/></div></EscopoCampos><div className="conta-rapida-resultado" aria-live="polite">{erro?<p className="error-inline">{erro}</p>:<><span>Você paga</span><strong data-testid="desconto-rapido">{moeda(r.resultado)}</strong><p>São {moeda(r.diferenca)} de economia.</p></>}</div><Link className="link-com-seta" href="/porcentagem">Outras contas de porcentagem <ArrowRight size={17}/></Link></div></section>
+}
+export default function Inicio(){return <div className="container inicio"><section className="abertura"><div className="abertura-texto"><p className="rotulo">Calculadoras para a vida real</p><h1>Seu dinheiro,<br/><em>na ponta<br className="quebra-desktop"/> do lápis.</em></h1><p className="abertura-descricao">Veja o preço com desconto, compare parcelas ou descubra quanto guardar. Faça a conta com os seus valores.</p><a className="primary" href="#calculadoras">Escolher uma calculadora <ArrowRight size={18}/></a><p className="abertura-nota">Todas gratuitas. Pode usar sem criar conta.</p></div><ContaRapida/></section><section id="calculadoras" className="diretorio"><div className="section-heading"><h2>O que você quer calcular?</h2><span>Escolha abaixo e comece.</span></div><div className="grupos-ferramentas">{grupos.map(({titulo,classe,nota,slugs,Icon})=><section className={'grupo-ferramentas '+classe} key={classe}><div className="grupo-cabecalho"><Icon size={27} strokeWidth={1.8} aria-hidden="true"/><h3>{titulo}</h3><p>{nota}</p></div>{slugs.map(slug=>{const f=ferramentas.find(f=>f.slug===slug);return <Link className="ferramenta-linha" href={'/'+slug} key={slug}><div><h4>{f.titulo}</h4><p>{f.descricao}</p></div><ArrowUpRight size={21} aria-hidden="true"/></Link>})}</section>)}</div></section><section className="nota-de-bolso"><div><p className="rotulo">Vale conferir antes de comprar</p><h2>“Sem juros” pode<br/>ter dois preços.</h2></div><div><p>R$ 900 à vista ou 10 parcelas de R$ 100? O parcelamento soma R$ 1.000. São R$ 100 de diferença, mesmo que a etiqueta diga “sem juros”.</p><Link className="link-com-seta" href="/a-vista-ou-parcelado">Comparar uma compra <ArrowRight size={18}/></Link></div></section><div className="nota-fontes"><p>Quer conferir a conta? Cada ferramenta mostra a regra usada. Inflação e moedas vêm de fontes públicas, com a data ao lado.</p><Link href="/metodologia">Conheça as fontes e os cálculos <ArrowUpRight size={16}/></Link></div></div>}

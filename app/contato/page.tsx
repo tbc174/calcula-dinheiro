@@ -1,0 +1,6 @@
+import {notFound} from 'next/navigation';
+import config from '../../config/publicacao.json';
+import {contatoValido} from '../../lib/publicacao.mjs';
+import {metadataPagina} from '../../lib/seo';
+export function generateMetadata(){return contatoValido(config.emailContato)?metadataPagina('Contato','Envie dúvidas, sugestões ou pedidos sobre privacidade ao responsável pelo Calcula Dinheiro.','/contato'):{title:'Página não encontrada',robots:{index:false,follow:false}}}
+export default function Page(){if(!contatoValido(config.emailContato))notFound();return <div className="container"><article className="prose"><div className="eyebrow">Fale com o projeto</div><h1>Contato</h1><p>Responsável: {config.responsavel}.</p><p>Para sugestões, problemas em uma conta ou pedidos relacionados a dados pessoais, escreva para <a href={'mailto:'+config.emailContato}>{config.emailContato}</a>.</p><p>Ao relatar um problema, informe a ferramenta e o comportamento esperado. Não envie senhas, documentos ou dados financeiros pessoais; prefira um exemplo fictício que reproduza a dúvida.</p><p>Não oferecemos atendimento financeiro individual. As respostas dependem da disponibilidade do responsável.</p></article></div>}

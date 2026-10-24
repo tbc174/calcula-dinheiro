@@ -1,0 +1,39 @@
+name: calcula-dinheiro
+services:
+  web:
+    image: node:22-bookworm-slim
+    container_name: calcula-dinheiro
+    user: "1000:1000"
+    working_dir: /app
+    command: ["node", "server.js"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 0.5
+    pids_limit: 100
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      NODE_OPTIONS: --max-old-space-size=384
+    ports:
+      - "127.0.0.1:8082:3000"
+    volumes:
+      - ./releases/20261024-001/dist/standalone:/app:ro
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/robots.txt',{signal:AbortSignal.timeout(3000)}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "3"
