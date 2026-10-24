@@ -15,7 +15,7 @@ Instalar o site em serviço separado no VPS existente e conectar calculadinheiro
 - [x] Testar rotas, seis calculadoras, gráficos, comparação, índices, canonical, robots, sitemap e redirecionamento www.
 - [x] Instalar serviço separado, com limite de 512 MiB e 0,5 CPU, porta somente local; construir com recursos limitados e sem reiniciar serviços do TickerLab.
 - [x] Adicionar domínio e rotas na Cloudflare, preservando rotas existentes. Alterar os servidores DNS no Registro.br apenas para os valores fornecidos pela Cloudflare.
-- [ ] Validar HTTPS e acesso público no domínio final; conferir novamente a saúde e recursos do TickerLab.
+- [x] Validar HTTPS e acesso público no domínio final; conferir novamente a saúde e recursos do TickerLab.
 - [x] Registrar versão, atualização, reversão e pendências.
 
 ## Arquivos e implantação
@@ -35,3 +35,7 @@ As etapas VPS, publicação, túnel e DNS estão abrangidas pelo pedido explíci
 ## Atualização de 24/10/2026, 13h54 BRT
 
 VPS e rotas prontos; delegação salva no Registro.br às 13h48, com nova transição de cerca de duas horas. Cloudflare aguardando propagação e certificado. Conferências locais de rotas, índices, canonical, sitemap e redirecionamento www aprovadas. Validação pública HTTPS ainda pendente. Saúde dos demais serviços e limites da carga nacional preservados. Consulte docs/implantacao.md para evidências, retorno e próximos passos.
+
+## Conclusão de 24/10/2026, 16h31 BRT
+
+Domínio público funcionando, com certificado válido na raiz e no www, HTTP→HTTPS e www→raiz preservando caminho/parâmetros. Seis ferramentas testadas com operações reais no navegador, gráficos, comparação e fontes/datas; API, canonical, robots e sitemap aprovados externamente. TickerLab, API, PostgreSQL, Ficha Clara e Calcula saudáveis na conferência de 16h26. Sem recriação, coleta ou mudança de limites durante a validação. Detalhes e casos numéricos em docs/implantacao.md. Search Console, contato público e AdSense permanecem etapas separadas.
