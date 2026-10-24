@@ -21,4 +21,5 @@ Adicionar apenas calculadinheiro.com.br e www.calculadinheiro.com.br ao túnel e
 Restaurar o Compose anterior e executar up -d somente no projeto Calcula Dinheiro. Preservar a release anterior e a publicação provisória no Sites até validar o domínio definitivo.
 
 ## Estado em 24/10/2026
-Capacidade medida: cerca de 7 GiB de RAM disponíveis e 63 GB livres em disco. Primeira release instalada; correção de navegação preparada para a segunda. DNS ainda em transição no Registro.br. HTTPS definitivo, Search Console, e-mail público e aprovação AdSense pendentes. Publicar no GitHub não conclui esses itens.
+Capacidade medida: cerca de 7 GiB de RAM disponíveis e 63 GB livres em disco. Release 20261024-002 instalada e validada: 14 testes, TypeScript, build Linux, 11 páginas e navegação no navegador. TickerLab, API e PostgreSQL saudáveis após a atualização. Rotas do túnel ainda não salvas. DNS ainda em transição no Registro.br. HTTPS definitivo, Search Console, e-mail público e aprovação AdSense pendentes. Publicar no GitHub não conclui esses itens.
+
