@@ -23,7 +23,7 @@ services:
     ports:
       - "127.0.0.1:8082:3000"
     volumes:
-      - ./releases/20261024-001/dist/standalone:/app:ro
+      - ./releases/20261024-002/dist/standalone:/app:ro
     tmpfs:
       - /tmp:size=32m,mode=1777
     healthcheck:
@@ -37,3 +37,4 @@ services:
       options:
         max-size: 5m
         max-file: "3"
+
