@@ -10,13 +10,13 @@ Instalar o site em serviço separado no VPS existente e conectar calculadinheiro
 
 ## Etapas
 - [x] Conferir capacidade e estado dos serviços existentes.
-- [ ] Exportar a fonte aprovada cd3ff533bc056eedabbdeb6a3c1f3ccc3067a80c para uma cópia separada.
-- [ ] Adaptar o empacotamento para Node independente da hospedagem Sites, preservando componentes e fórmulas.
-- [ ] Testar rotas, seis calculadoras, gráficos, comparação, índices, canonical, robots, sitemap e redirecionamento www.
-- [ ] Instalar serviço separado, com limite de 512 MiB e 0,5 CPU, porta somente local; construir com recursos limitados e sem reiniciar serviços do TickerLab.
-- [ ] Adicionar domínio e rotas na Cloudflare, preservando rotas existentes. Alterar os servidores DNS no Registro.br apenas para os valores fornecidos pela Cloudflare.
+- [x] Exportar a fonte aprovada cd3ff533bc056eedabbdeb6a3c1f3ccc3067a80c para uma cópia separada.
+- [x] Adaptar o empacotamento para Node independente da hospedagem Sites, preservando componentes e fórmulas.
+- [x] Testar rotas, seis calculadoras, gráficos, comparação, índices, canonical, robots, sitemap e redirecionamento www.
+- [x] Instalar serviço separado, com limite de 512 MiB e 0,5 CPU, porta somente local; construir com recursos limitados e sem reiniciar serviços do TickerLab.
+- [x] Adicionar domínio e rotas na Cloudflare, preservando rotas existentes. Alterar os servidores DNS no Registro.br apenas para os valores fornecidos pela Cloudflare.
 - [ ] Validar HTTPS e acesso público no domínio final; conferir novamente a saúde e recursos do TickerLab.
-- [ ] Registrar versão, atualização, reversão e pendências.
+- [x] Registrar versão, atualização, reversão e pendências.
 
 ## Arquivos e implantação
 Fonte de trabalho: work/calcula-dinheiro-vps. Alterações previstas: configuração Vite/Next, comando de inicialização, redirecionamento www, Docker Compose e documentação da instalação. Componentes visuais e fórmulas devem permanecer idênticos à versão aprovada. Fonte e artefato da versão ficarão no diretório exclusivo do Calcula Dinheiro no VPS, sem inclusão de credenciais.
@@ -31,3 +31,7 @@ Fonte de trabalho: work/calcula-dinheiro-vps. Alterações previstas: configura�
 Parar somente o novo serviço e remover somente suas rotas do túnel. A versão pública do Sites permanece disponível no endereço provisório. Para usar o domínio próprio novamente no Sites, aplicar seus registros documentados e revalidar o certificado; a reversão DNS depende de propagação. Não apagar a instalação ou a publicação anterior durante a migração.
 
 As etapas VPS, publicação, túnel e DNS estão abrangidas pelo pedido explícito desta conversa. Acesso às contas pode depender de login de Tiago; senha e códigos não devem ser enviados no chat.
+
+## Atualização de 24/10/2026, 13h54 BRT
+
+VPS e rotas prontos; delegação salva no Registro.br às 13h48, com nova transição de cerca de duas horas. Cloudflare aguardando propagação e certificado. Conferências locais de rotas, índices, canonical, sitemap e redirecionamento www aprovadas. Validação pública HTTPS ainda pendente. Saúde dos demais serviços e limites da carga nacional preservados. Consulte docs/implantacao.md para evidências, retorno e próximos passos.
