@@ -58,6 +58,8 @@ extraia novamente o script desse pacote; não reutilize o script convertido.
 - Inicia uma prévia em porta efêmera de loopback, montando somente o standalone.
 - Verifica meta, ads.txt, contato, privacidade, sitemap, robots, redirecionamento,
   favicon, CSS, JavaScript e estrutura da API pública.
+- Aceita o canonical da página inicial com ou sem a barra final, pois o Vinext
+  serializa a raiz sem essa barra. Nas demais páginas, exige a URL exata.
 - Troca apenas o caminho do volume no Compose, depois de conferir concorrência.
 - Recria somente `web`, mantendo porta, limites e demais opções existentes.
 - Confere novamente a saúde e as respostas HTTP depois da troca.

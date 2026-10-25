@@ -192,8 +192,14 @@ def read_page(client, path):
     page = Page(response.text())
     require(page.meta and all(value == PUBLISHER for value in page.meta),
             path + ": meta google-adsense-account ausente ou incorreta")
-    require(page.canonicals and all(value == FINAL_ORIGIN + path for value in page.canonicals),
-            path + ": canonical ausente ou incorreto")
+    expected_canonicals = {FINAL_ORIGIN + path}
+    if path == "/":
+        expected_canonicals.add(FINAL_ORIGIN)
+    require(page.canonicals, path + ": canonical ausente")
+    require(all(value in expected_canonicals for value in page.canonicals),
+            path + ": canonical incorreto; esperado "
+            + json.dumps(sorted(expected_canonicals), ensure_ascii=True)
+            + "; recebido " + json.dumps(page.canonicals, ensure_ascii=True))
     for source in page.script_sources:
         lowered = source.lower()
         require("adsbygoogle" not in lowered and "fundingchoices" not in lowered,
