@@ -17,9 +17,16 @@ que a aplicação já utiliza.
 
 O repositório não tem publicação automática. No computador com acesso ao GitHub
 privado e ao VPS, exporte um commit específico que contenha esta configuração e os
-dois scripts abaixo. Use `git archive --format=tar.gz --output=ARQUIVO COMMIT` e
-transfira o arquivo por SCP. Evite transmitir tar binário por pipeline do Windows
-PowerShell.
+dois scripts abaixo. Gere o pacote preservando as quebras de linha Linux, inclusive
+quando o Git do computador estiver configurado com `core.autocrlf=true`:
+
+```sh
+git -c core.autocrlf=false -c core.eol=lf archive --format=tar.gz --output=ARQUIVO COMMIT
+```
+
+As opções `-c` valem somente para este comando. A regra `.gitattributes` também
+mantém os scripts `.sh` e `.py` em LF. Transfira o arquivo por SCP; evite transmitir
+tar binário por pipeline do Windows PowerShell.
 
 Transfira também `scripts/deploy-verification.sh`, extraído desse mesmo archive,
 e execute no VPS:
@@ -31,6 +38,11 @@ bash deploy-verification.sh /caminho/source.tar.gz SHA256_DO_ARQUIVO COMMIT_DE_4
 O script confere o SHA256 e o commit registrado pelo próprio `git archive`.
 O pacote precisa incluir `scripts/check-verification.py`. A chamada é limitada
 ao serviço `web` da stack `/opt/stacks/calcula-dinheiro`.
+
+Se o Bash parar na linha `set -Eeuo pipefail` com `invalid option name`, o script
+pode ter sido convertido para CRLF durante a exportação. Essa linha precede
+qualquer alteração da instalação. Gere um pacote novo com o comando acima e
+extraia novamente o script desse pacote; não reutilize o script convertido.
 
 ## Comportamento da publicação
 
