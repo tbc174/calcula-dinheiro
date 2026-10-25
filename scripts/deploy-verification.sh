@@ -25,8 +25,16 @@ backup="$workdir/compose-anterior.yaml"; candidate="$base/.compose-$run_id.yaml"
 swapped=0; success=0; candidate_sha=''; original_sha=''; previous_id=''; previous_mount=''; image=''; compose_image=''
 
 snapshot_others() {
-  docker ps -aq | xargs -r docker inspect --format '{{.Name}} {{.Id}} {{.State.Status}} {{if .State.Health}}{{.State.Health.Status}}{{else}}sem-healthcheck{{end}}' |
-    awk '$1 != "/calcula-dinheiro"' | sort
+  docker ps -aq |
+    xargs -r docker inspect --type container --format '{"name":{{json .Name}},"id":{{json .Id}},"state":{{json .State}}}' |
+    python3 -c 'import json, sys
+for line in sys.stdin:
+    container = json.loads(line)
+    if container["name"] == "/calcula-dinheiro":
+        continue
+    state = container["state"]
+    health = state.get("Health") or {}
+    print(container["name"], container["id"], state["Status"], health.get("Status", "sem-healthcheck"))' | sort
 }
 remove_owned() {
   local name=$1 owner
@@ -36,7 +44,12 @@ remove_owned() {
 healthy() {
   local deadline=$((SECONDS + 90)) state
   while (( SECONDS < deadline )); do
-    state=$(docker inspect --format '{{.State.Status}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' calcula-dinheiro 2>/dev/null) || state=ausente
+    state=$(
+      docker inspect --type container --format '{{json .State}}' calcula-dinheiro 2>/dev/null |
+        python3 -c 'import json, sys
+state = json.load(sys.stdin)
+print(state["Status"], (state.get("Health") or {}).get("Status", "sem-healthcheck"))' 2>/dev/null
+    ) || state=ausente
     [[ "$state" != 'running healthy' ]] || return 0
     [[ "$state" != exited* && "$state" != dead* ]] || return 1
     sleep 2
@@ -90,7 +103,7 @@ import json, pathlib, shutil, sys
 base = pathlib.Path(sys.argv[1]); c = json.load(open(sys.argv[2]))
 assert base.resolve() == base and (base / 'releases').resolve() == base / 'releases', 'Pasta da instalação inesperada'
 assert c['project'] == 'calcula-dinheiro' and c['service'] == 'web', 'Projeto ou serviço divergente'
-assert c['state']['Running'] and c['state'].get('Health', {}).get('Status') == 'healthy', 'Serviço atual não está saudável'
+assert c['state']['Running'] and (c['state'].get('Health') or {}).get('Status') == 'healthy', 'Serviço atual não está saudável'
 app = [m for m in c['mounts'] if m['Destination'] == '/app']
 assert len(app) == 1 and app[0]['Type'] == 'bind' and app[0]['RW'] is False, 'Volume /app inesperado'
 assert all(m['Destination'] == '/app' or (m['Type'] == 'tmpfs' and m['Destination'] == '/tmp') for m in c['mounts']), 'Volumes adicionais inesperados'
