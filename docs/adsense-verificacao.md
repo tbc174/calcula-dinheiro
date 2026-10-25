@@ -46,7 +46,10 @@ extraia novamente o script desse pacote; não reutilize o script convertido.
 
 ## Comportamento da publicação
 
-- Confere instalação, permissões, saúde e recursos disponíveis antes de construir.
+- Confere instalação, permissões, saúde do Calcula Dinheiro e recursos disponíveis
+  antes de construir.
+- Registra como aviso os estados `unhealthy` ou `starting` preexistentes de outros
+  contêineres. Esses estados, sozinhos, não impedem uma atualização isolada do site.
 - Exige pelo menos 2,5 GiB de memória disponível e 6 GiB livres em disco.
 - Cria uma release nova; preserva a release anterior e uma cópia do Compose ativo.
 - Usa a mesma imagem imutável do serviço atual. O construtor fica limitado a
@@ -73,6 +76,12 @@ anteriores para liberar espaço durante este procedimento.
 
 Os serviços TickerLab e Ficha Clara não são alterados. Mudanças observadas em
 outros contêineres são apenas registradas para conferência.
+
+O estado de saúde Docker de outro contêiner não comprova a disponibilidade da
+dependência HTTP do Calcula Dinheiro. A rota `/api/dados` da prévia, criada com
+cache vazio, precisa obter e validar os índices de
+`https://tickerlab.com.br/dados/ferramentas.json` antes da troca de versão. Se essa
+verificação falhar, a publicação é interrompida antes da troca.
 
 ## Próxima etapa
 

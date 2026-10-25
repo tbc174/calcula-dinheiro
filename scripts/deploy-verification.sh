@@ -95,7 +95,7 @@ trap 'exit 143' TERM
 trap 'exit 129' HUP
 snapshot_others > "$workdir/outros-antes.txt"
 if awk '($3=="running" || $3=="restarting") && ($4=="unhealthy" || $4=="starting") {found=1; print $1, $3, $4} END {exit !found}' "$workdir/outros-antes.txt"; then
-  fail 'Há outro serviço com saúde pendente; a construção não foi iniciada.'
+  printf 'AVISO: os estados acima pertencem a outros contêineres e já existiam antes desta implantação. Prosseguindo com as verificações do Calcula Dinheiro.\n' >&2
 fi
 docker inspect --format '{"id":{{json .Id}},"image":{{json .Image}},"project":{{json (index .Config.Labels "com.docker.compose.project")}},"service":{{json (index .Config.Labels "com.docker.compose.service")}},"state":{{json .State}},"mounts":{{json .Mounts}}}' calcula-dinheiro > "$workdir/anterior.json"
 python3 - "$base" "$workdir/anterior.json" <<'PY'
