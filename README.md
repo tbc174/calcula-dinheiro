@@ -22,7 +22,7 @@ npm run dev
 
 Produção: `npm run build` e `npm start`. O servidor aceita HOST e PORT. Use HOST=127.0.0.1 nas prévias locais.
 
-Validação: `npm test`, `npx tsc --noEmit` e `npm run build`.
+Validação: `npm test`, `npx tsc --noEmit`, `npm run build` e, com o build pronto, `npm run test:site` (metadados dentro do `<head>`).
 
 ## Organização
 - app/: páginas e API pública de dados.
