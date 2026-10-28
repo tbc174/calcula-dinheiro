@@ -11,6 +11,7 @@ import http from 'node:http';
 import net from 'node:net';
 import path from 'node:path';
 import config from '../../config/publicacao.json' with {type:'json'};
+import {tokenWebAnalytics} from '../../lib/publicacao.mjs';
 
 const raiz=path.resolve(import.meta.dirname,'..','..');
 const servidor=path.join(raiz,'dist','standalone','server.js');
@@ -43,6 +44,11 @@ test('título, description e canonical ficam dentro do <head> para robôs e nave
   assert.equal(corpo.split('<title>').length-1,1,`${caminho} (${nome}): um só <title>`);
   assert.match(corpo.slice(0,p.head),/<link rel="canonical" href="https:\/\/calculadinheiro\.com\.br[^"]*"/,`${caminho} (${nome}): canonical absoluto`);
   assert.match(corpo.slice(0,p.head),/<meta name="robots" content="index, follow"/,`${caminho} (${nome}): robots index no domínio final`);
+  // Medição de visitas (Cloudflare Web Analytics): o beacon está no HTML exatamente quando há token na configuração.
+  const token=tokenWebAnalytics(config.webAnalytics?.token);
+  const beacons=corpo.match(/<script defer="" src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js" data-cf-beacon="[^"]*"><\/script>/g)||[];
+  assert.equal(beacons.length,token?1:0,`${caminho} (${nome}): beacon ${token?'presente uma vez':'ausente sem token'}`);
+  if(token)assert.ok(beacons[0].includes('&quot;token&quot;:&quot;'+token+'&quot;'),`${caminho} (${nome}): token no beacon`);
  }
  const previa=await baixar(porta,'/',agentes.googlebot,'previa.example.org');
  assert.match(previa.corpo.slice(0,previa.corpo.indexOf('</head>')),/<meta name="robots" content="noindex, nofollow"/,'fora do domínio final a página pede noindex');
