@@ -9,5 +9,8 @@
     "slotRodape": "8432472360",
     "cmpScriptUrl": "",
     "cmpValidada": false
+  },
+  "webAnalytics": {
+    "token": ""
   }
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,consentimentoValido,aceitaTcf} from '../lib/publicacao.mjs';
+import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,consentimentoValido,aceitaTcf,tokenWebAnalytics,beaconWebAnalytics} from '../lib/publicacao.mjs';
 const origem='https://calculadinheiro.com.br';
 test('indexação somente no domínio final, sem liberar prévia ou host parecido',()=>{
  assert.equal(publicarHost('calculadinheiro.com.br',origem),true);
@@ -36,4 +36,10 @@ test('CMP ainda carregando ou sem permissão não libera pedidos de anúncio',()
  assert.equal(aceitaTcf({...c,purpose:{consents:{1:false}}}),false);
  assert.equal(aceitaTcf({...c,vendor:{consents:{755:false}}}),false);
  assert.equal(aceitaTcf({eventStatus:'tcloaded'}),false);
+});
+test('medição de visitas só com token bem formado; sem token, nenhum beacon',()=>{
+ const token='0123456789abcdef0123456789abcdef';
+ assert.equal(tokenWebAnalytics(token),token);
+ assert.deepEqual(beaconWebAnalytics(token),{src:'https://static.cloudflareinsights.com/beacon.min.js',dados:'{"token":"0123456789abcdef0123456789abcdef"}'});
+ for(const t of ['',null,undefined,'ABCDEF','0123456789abcdef0123456789abcde','0123456789abcdef0123456789abcdef1','x"><script>'])assert.equal(beaconWebAnalytics(t),null,String(t));
 });
