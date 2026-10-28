@@ -46,3 +46,4 @@ yarn-error.log*
 
 /.openai/
 /releases/
+__pycache__/
