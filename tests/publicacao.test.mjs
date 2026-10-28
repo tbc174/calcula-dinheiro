@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,consentimentoValido,aceitaTcf} from '../lib/publicacao.mjs';
+import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,slotDe,publicidadeRecusada} from '../lib/publicacao.mjs';
 const origem='https://calculadinheiro.com.br';
 test('indexação somente no domínio final, sem liberar prévia ou host parecido',()=>{
  assert.equal(publicarHost('calculadinheiro.com.br',origem),true);
@@ -18,22 +18,21 @@ test('publisher e ads.txt exigem ID real bem formado; ausente não fabrica crede
  assert.equal(textoAds('pub-1234567890123456'),'google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0\n');
  assert.equal(textoAds(''),null);
 });
-test('publicidade exige modo ativo, slot e CMP confirmada',()=>{
- const a={publisherId:'pub-1234567890123456',modo:'ativo',slotRodape:'1234567890',cmpScriptUrl:'https://fundingchoicesmessages.google.com/i/pub-1234567890123456?ers=1',cmpValidada:true};
+test('publicidade exige modo ativo, publisher e slot do rodapé',()=>{
+ const a={publisherId:'pub-1234567890123456',modo:'ativo',slotRodape:'1234567890'};
  assert.equal(anunciosProntos(a),true);
- for(const patch of [{modo:'verificacao'},{cmpValidada:false},{publisherId:''},{slotRodape:''},{cmpScriptUrl:'https://outro.example/script.js'}])assert.equal(anunciosProntos({...a,...patch}),false);
+ for(const patch of [{modo:'verificacao'},{publisherId:''},{slotRodape:''},{slotRodape:'12345'}])assert.equal(anunciosProntos({...a,...patch}),false);
 });
-test('consentimento expira, recusa e formato antigo não liberam publicidade',()=>{
- const agora=1000000;const c={versao:1,publicidade:true,expira:agora+10000};
- assert.equal(consentimentoValido(c,agora),true);
- for(const c of [null,{}, {versao:1,publicidade:false,expira:agora+100}, {versao:1,publicidade:true,expira:agora-1}, {versao:0,publicidade:true,expira:agora+100}])assert.equal(consentimentoValido(c,agora),false);
+test('cada posição usa o próprio slot e, sem ele, o do rodapé',()=>{
+ const a={slotRodape:'1111111111',slots:{resultado:'2222222222',conteudo:''}};
+ assert.equal(slotDe(a,'resultado'),'2222222222');
+ assert.equal(slotDe(a,'conteudo'),'1111111111');
+ assert.equal(slotDe(a,'rodape'),'1111111111');
+ assert.equal(slotDe({...a,slots:{resultado:'x"><script>'}},'resultado'),'1111111111');
+ assert.equal(slotDe({slotRodape:'1111111111'},'resultado'),'1111111111');
 });
-test('CMP ainda carregando ou sem permissão não libera pedidos de anúncio',()=>{
- assert.equal(aceitaTcf({eventStatus:'tcloaded',gdprApplies:false}),true);
- const c={eventStatus:'useractioncomplete',gdprApplies:true,purpose:{consents:{1:true}},vendor:{consents:{755:true}}};
- assert.equal(aceitaTcf(c),true);
- assert.equal(aceitaTcf({...c,eventStatus:'cmpuishown'}),false);
- assert.equal(aceitaTcf({...c,purpose:{consents:{1:false}}}),false);
- assert.equal(aceitaTcf({...c,vendor:{consents:{755:false}}}),false);
- assert.equal(aceitaTcf({eventStatus:'tcloaded'}),false);
+test('só uma recusa válida e dentro do prazo desliga a publicidade',()=>{
+ const agora=1000000;
+ assert.equal(publicidadeRecusada({versao:1,publicidade:false,expira:agora+10000},agora),true);
+ for(const c of [null,{},{versao:1,publicidade:true,expira:agora+100},{versao:1,publicidade:false,expira:agora-1},{versao:0,publicidade:false,expira:agora+100}])assert.equal(publicidadeRecusada(c,agora),false);
 });

@@ -19,7 +19,7 @@ FINAL_ORIGIN = "https://calculadinheiro.com.br"
 FINAL_HOST = "calculadinheiro.com.br"
 PUBLISHER = "ca-pub-4178012487609221"
 CONTACT = "contato@tickerlab.com.br"
-REVISED = "2026-10-25"
+REVISED = "2026-10-28"
 ADS_TEXT = "google.com, pub-4178012487609221, DIRECT, f08c47fec0942fa0\n"
 EXPECTED_PATHS = {
     "/", "/juros-compostos", "/porcentagem", "/a-vista-ou-parcelado",
@@ -203,8 +203,8 @@ def read_page(client, path):
     for source in page.script_sources:
         lowered = source.lower()
         require("adsbygoogle" not in lowered and "fundingchoices" not in lowered,
-                path + ": script de publicidade/CMP presente em modo de verificação")
-    require(page.ad_slots == 0, path + ": bloco ins.adsbygoogle presente em modo de verificação")
+                path + ": script de publicidade/CMP presente no HTML do servidor")
+    require(page.ad_slots == 0, path + ": bloco ins.adsbygoogle presente no HTML do servidor")
     return page
 
 

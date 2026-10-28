@@ -1,5 +1,8 @@
 # AdSense: publicar a configuração de verificação
 
+> Atualização de 28/10/2026: o site foi aprovado e os anúncios foram ligados. Veja
+> [adsense-ativacao.md](adsense-ativacao.md). O procedimento de publicação abaixo continua valendo.
+
 ## Estado desta alteração
 
 A configuração registra o editor `pub-4178012487609221`, o bloco responsivo

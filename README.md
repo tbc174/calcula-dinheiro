@@ -10,7 +10,7 @@ Seis calculadoras gratuitas para o dinheiro do dia a dia, em português brasilei
 - Correção pelo IPCA.
 - Conversor de real, dólar e euro.
 
-Inclui Sobre, Metodologia, Privacidade e Termos; SEO por página, sitemap e robots conforme o domínio. Contato e anúncios continuam desativados até preencher os dados reais.
+Inclui Sobre, Metodologia, Privacidade e Termos; SEO por página, sitemap e robots conforme o domínio. Anúncios do AdSense em três posições por calculadora, com recusa em "Preferências de privacidade"; veja [Ativação do AdSense](docs/adsense-ativacao.md).
 
 ## Executar
 Requer Node.js >=22.13 e npm.

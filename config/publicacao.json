@@ -2,12 +2,14 @@
   "origem": "https://calculadinheiro.com.br",
   "responsavel": "Tiago",
   "emailContato": "contato@tickerlab.com.br",
-  "revisadoEm": "2026-10-25",
+  "revisadoEm": "2026-10-28",
   "adsense": {
     "publisherId": "pub-4178012487609221",
-    "modo": "verificacao",
+    "modo": "ativo",
     "slotRodape": "8432472360",
-    "cmpScriptUrl": "",
-    "cmpValidada": false
+    "slots": {
+      "resultado": "",
+      "conteudo": ""
+    }
   }
 }

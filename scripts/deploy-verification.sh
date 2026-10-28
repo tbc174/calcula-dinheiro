@@ -142,7 +142,8 @@ with tarfile.open(archive, 'r:*') as tf:
 c = json.loads((root / 'config/publicacao.json').read_text()); a = c['adsense']
 assert c['origem'] == 'https://calculadinheiro.com.br' and c['emailContato'] == 'contato@tickerlab.com.br', 'Domínio ou contato divergente'
 assert a['publisherId'] == 'pub-4178012487609221' and a['slotRodape'] == '8432472360', 'Identificadores AdSense divergentes'
-assert a['modo'] == 'verificacao' and a['cmpValidada'] is False and a['cmpScriptUrl'] == '', 'A configuração deve permanecer em verificação'
+assert a['modo'] in ('verificacao', 'ativo'), 'Modo AdSense desconhecido'
+assert all(v == '' or (len(v) == 10 and v.isdigit()) for v in a.get('slots', {}).values()), 'Slot AdSense malformado'
 assert (root / 'scripts/check-verification.py').is_file(), 'Validador ausente no pacote'
 print('Pacote e configuração conferidos; nova release:', root.name)
 PY
