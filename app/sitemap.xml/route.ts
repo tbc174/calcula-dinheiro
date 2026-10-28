@@ -1,3 +1,4 @@
 import config from '../../config/publicacao.json';
-import {xmlSitemap} from '../../lib/publicacao.mjs';
-export function GET(){return new Response(xmlSitemap(config),{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=300'}})}
+import {xmlSitemap,revisoesPorCaminho} from '../../lib/publicacao.mjs';
+import {conteudos} from '../../lib/conteudo';
+export function GET(){return new Response(xmlSitemap(config,revisoesPorCaminho(conteudos)),{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=300'}})}
