@@ -5,6 +5,7 @@ Cloudflare Tunnel → http://127.0.0.1:8082 → contêiner Node na porta 3000. S
 ## Atualizar
 1. Exportar o commit com git archive para uma nova pasta releases/IDENTIFICADOR no VPS.
 2. Construir em Linux com a imagem Node do Compose, limitando o construtor a 1.536 MiB e 0,5 CPU. Executar npm ci --no-audit --no-fund, npm test, npx tsc --noEmit e npm run build.
+3. Depois do build, executar npm run test:site: sobe o servidor construído e confere que título, description e canonical saem dentro do <head> para o Googlebot e para navegadores (sem isso o Search Console mostra canonical "Nenhum").
 3. Conferir dist/standalone/server.js e testar antes de publicar.
 4. Guardar o Compose ativo e atualizar somente o caminho da release no volume.
 5. Executar docker compose -f /opt/stacks/calcula-dinheiro/compose.yaml up -d.
