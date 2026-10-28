@@ -12,6 +12,7 @@ import net from 'node:net';
 import path from 'node:path';
 import config from '../../config/publicacao.json' with {type:'json'};
 import {tokenWebAnalytics} from '../../lib/publicacao.mjs';
+import {conteudos} from '../../lib/conteudo.ts';
 
 const raiz=path.resolve(import.meta.dirname,'..','..');
 const servidor=path.join(raiz,'dist','standalone','server.js');
@@ -49,7 +50,24 @@ test('título, description e canonical ficam dentro do <head> para robôs e nave
   const beacons=corpo.match(/<script defer="" src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js" data-cf-beacon="[^"]*"><\/script>/g)||[];
   assert.equal(beacons.length,token?1:0,`${caminho} (${nome}): beacon ${token?'presente uma vez':'ausente sem token'}`);
   if(token)assert.ok(beacons[0].includes('&quot;token&quot;:&quot;'+token+'&quot;'),`${caminho} (${nome}): token no beacon`);
+  // Dados estruturados do site (Tarefa 10): WebSite + Organization em toda página, num JSON-LD que o JSON.parse aceita.
+  const esquemas=[...corpo.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)].map(m=>JSON.parse(m[1]));
+  const doSite=esquemas.filter(e=>Array.isArray(e['@graph'])&&e['@graph'].some(n=>n['@type']==='WebSite'));
+  assert.equal(doSite.length,1,`${caminho} (${nome}): um JSON-LD com WebSite`);
+  const tipos=doSite[0]['@graph'].map(n=>n['@type']).sort();
+  assert.deepEqual(tipos,['Organization','WebSite'],`${caminho} (${nome}): WebSite e Organization`);
+  assert.equal(doSite[0]['@graph'].find(n=>n['@type']==='WebSite').url,config.origem+'/',`${caminho} (${nome}): URL do site`);
+  // FAQPage só quando a página mostra perguntas: hoje nenhuma calculadora tem, então nenhum FAQPage pode sair.
+  const faqs=esquemas.filter(e=>e['@type']==='FAQPage');
+  const perguntasNaTela=(corpo.match(/class="guia-perguntas"/g)||[]).length;
+  assert.equal(faqs.length,perguntasNaTela>0?1:0,`${caminho} (${nome}): FAQPage só com perguntas na tela`);
  }
+ // Sitemap (Tarefa 10): cada calculadora com a sua data de revisão, as outras páginas com a do site.
+ const sitemap=await baixar(porta,'/sitemap.xml',agentes.googlebot,hostFinal);
+ assert.equal(sitemap.status,200,'sitemap.xml');
+ const datas=Object.fromEntries([...sitemap.corpo.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><\/url>/g)].map(m=>[new URL(m[1]).pathname,m[2]]));
+ for(const [slug,c] of Object.entries(conteudos))assert.equal(datas['/'+slug],c.revisadoEm,`/${slug}: lastmod é a revisão da página`);
+ for(const p of ['/','/sobre','/metodologia','/privacidade','/termos'])assert.equal(datas[p],config.revisadoEm,`${p}: lastmod é a revisão do site`);
  const previa=await baixar(porta,'/',agentes.googlebot,'previa.example.org');
  assert.match(previa.corpo.slice(0,previa.corpo.indexOf('</head>')),/<meta name="robots" content="noindex, nofollow"/,'fora do domínio final a página pede noindex');
 });

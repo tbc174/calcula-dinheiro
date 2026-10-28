@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles/calcula.css";
 import "../styles/identidade.css";
 import { Header, Footer } from "../components/estrutura";
-import {metadataPagina,metadataAds} from '../lib/seo';
+import {metadataPagina,metadataAds,dadosEstruturadosSite,serializarSchema} from '../lib/seo';
 import {PublicidadeProvider} from '../components/publicidade';
 import config from '../config/publicacao.json';
 import {beaconWebAnalytics} from '../lib/publicacao.mjs';
@@ -18,6 +18,8 @@ export async function generateMetadata():Promise<Metadata>{return {
 }}
 
 const beacon=beaconWebAnalytics(config.webAnalytics?.token);
+// WebSite + Organization em toda página (dados estruturados do site); cada página acrescenta os seus.
+const esquemaDoSite=serializarSchema(dadosEstruturadosSite(config));
 
 export default function RootLayout({
   children,
@@ -26,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body><PublicidadeProvider><Header/><main id="conteudo">{children}</main><Footer/></PublicidadeProvider>{beacon&&<script defer src={beacon.src} data-cf-beacon={beacon.dados}></script>}</body>
+      <body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:esquemaDoSite}}/><PublicidadeProvider><Header/><main id="conteudo">{children}</main><Footer/></PublicidadeProvider>{beacon&&<script defer src={beacon.src} data-cf-beacon={beacon.dados}></script>}</body>
     </html>
   );
 }
