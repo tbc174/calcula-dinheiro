@@ -57,7 +57,7 @@ test('título, description e canonical ficam dentro do <head> para robôs e nave
   const tipos=doSite[0]['@graph'].map(n=>n['@type']).sort();
   assert.deepEqual(tipos,['Organization','WebSite'],`${caminho} (${nome}): WebSite e Organization`);
   assert.equal(doSite[0]['@graph'].find(n=>n['@type']==='WebSite').url,config.origem+'/',`${caminho} (${nome}): URL do site`);
-  // FAQPage só quando a página mostra perguntas: hoje nenhuma calculadora tem, então nenhum FAQPage pode sair.
+  // FAQPage só quando a página mostra perguntas (hoje só a de financiamento tem): sem perguntas na tela, nenhum FAQPage pode sair.
   const faqs=esquemas.filter(e=>e['@type']==='FAQPage');
   const perguntasNaTela=(corpo.match(/class="guia-perguntas"/g)||[]).length;
   assert.equal(faqs.length,perguntasNaTela>0?1:0,`${caminho} (${nome}): FAQPage só com perguntas na tela`);
