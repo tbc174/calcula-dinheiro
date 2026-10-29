@@ -1,6 +1,6 @@
 # Calcula Dinheiro
 
-Treze calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
+Catorze calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
 
 ## Ferramentas
 - Juros compostos com aportes e comparação de cenários.
@@ -8,6 +8,7 @@ Treze calculadoras gratuitas para o dinheiro do dia a dia, em português brasile
 - À vista ou parcelado.
 - Financiamento: SAC ou Price, com amortização extra.
 - Empréstimo: parcela pela Price, juros no total e CET com IOF e tarifa (alíquotas do IOF com data de conferência), e o mesmo empréstimo em outros prazos.
+- Rotativo do cartão: juros e IOF de um mês de rotativo (até a fatura seguinte), o parcelamento da fatura mês a mês com o teto de 100% da Lei 14.690/2023 (juros e encargos nunca passam do valor original; o IOF fica fora), e a comparação com um empréstimo pessoal, com as taxas médias do Banco Central como sugestão (com data de conferência).
 - 13º salário: integral ou proporcional pela regra dos 15 dias (mês a mês), 1ª parcela sem desconto e 2ª parcela com o INSS e o imposto de renda de 2026 sobre o 13º inteiro.
 - Rescisão: saldo de salário, aviso prévio (Lei 12.506/2011, com projeção), 13º e férias proporcionais com o terço, férias vencidas, INSS e imposto de renda só onde incidem, e a multa de 40% ou 20% do FGTS, por tipo de desligamento (sem justa causa, pedido de demissão, acordo do art. 484-A, justa causa).
 - Férias: férias com o terço pela tabela de faltas do art. 130, abono pecuniário de até um terço dos dias (isento), adiantamento do 13º, INSS e imposto de renda sobre férias e terço em separado do salário, fracionamento e a data limite do pagamento (2 dias antes).
