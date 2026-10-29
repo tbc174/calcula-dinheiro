@@ -1,6 +1,6 @@
 # Calcula Dinheiro
 
-Dez calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
+Onze calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
 
 ## Ferramentas
 - Juros compostos com aportes e comparação de cenários.
@@ -8,6 +8,7 @@ Dez calculadoras gratuitas para o dinheiro do dia a dia, em português brasileir
 - À vista ou parcelado.
 - Financiamento: SAC ou Price, com amortização extra.
 - Empréstimo: parcela pela Price, juros no total e CET com IOF e tarifa (alíquotas do IOF com data de conferência), e o mesmo empréstimo em outros prazos.
+- 13º salário: integral ou proporcional pela regra dos 15 dias (mês a mês), 1ª parcela sem desconto e 2ª parcela com o INSS e o imposto de renda de 2026 sobre o 13º inteiro.
 - Quanto rende: poupança, CDB, LCI ou LCA e Tesouro Selic, líquidos de IOF, imposto e custódia.
 - Salário líquido: INSS por faixa e imposto de renda com dependentes, desconto simplificado e a redução da Lei 15.270/2025 (tabelas de 2026, com data de validade).
 - Quanto guardar por mês.

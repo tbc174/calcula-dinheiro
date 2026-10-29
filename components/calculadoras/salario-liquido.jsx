@@ -40,7 +40,7 @@ export default function SalarioLiquido(){
 }
 
 // Risco 4 do plano: as tabelas vencem; perto do fim ou depois dele, a tela avisa (e um teste falha depois do fim).
-function AvisoDeVigencia(){
+export function AvisoDeVigencia(){
  const estado=estadoDaTabela(new Date(),INSS_2026);
  if(estado==='vigente')return null;
  const fim=dataBr(INSS_2026.vigenteAte);
@@ -58,7 +58,8 @@ function Resumo({r}){
  </Resultado>
 }
 
-function TabelaDoInss({r}){
+// `r` precisa de bruto, inss (e, no caminho do imposto, irrf e dependentes); o 13º passa o valor do 13º como bruto.
+export function TabelaDoInss({r}){
  return <section className="panel chart-panel"><div className="chart-head"><div><h2>INSS faixa a faixa</h2><p>A alíquota de cada faixa só sobre a parte do salário que cai nela.</p></div></div>
   <div className="table-wrap"><table><thead><tr><th>Faixa (até)</th><th>Alíquota</th><th>Parte do salário na faixa</th><th>Desconto</th></tr></thead><tbody>
    {r.inss.faixas.map(f=><tr key={f.ate}><td>{moeda(f.ate)}</td><td>{pct(f.aliquota)}</td><td>{moeda(f.base)}</td><td>{moeda(f.valor)}</td></tr>)}
@@ -67,7 +68,7 @@ function TabelaDoInss({r}){
  </section>
 }
 
-function CaminhoDoImposto({r}){
+export function CaminhoDoImposto({r,rotuloFinal='Imposto de renda do mês'}){
  const {irrf}=r;
  const linhas=[
   ['Deduções legais (INSS'+(r.dependentes>0?` + ${r.dependentes} × ${moeda(IRRF_2026.dependente)}`:'')+')',moeda(r.bruto-irrf.baseLegal),irrf.modo==='legal'?'usada':''],
@@ -75,7 +76,7 @@ function CaminhoDoImposto({r}){
   ['Base de cálculo',moeda(irrf.base),irrf.aliquota>0?`faixa de ${pct(irrf.aliquota)}`:'faixa isenta'],
   ['Imposto pela tabela',moeda(irrf.impostoPelaTabela),irrf.aliquota>0?`${pct(irrf.aliquota)} × base − ${moeda(irrf.parcelaADeduzir)}`:''],
   ['Redução da Lei 15.270/2025',irrf.reducao>0?'− '+moeda(irrf.reducao):moeda(0),r.bruto>IRRF_2026.reducao.limite?`só até ${moeda(IRRF_2026.reducao.limite)} de salário`:''],
-  ['Imposto de renda do mês',moeda(irrf.valor),`${pct(irrf.aliquotaEfetiva)} do bruto`],
+  [rotuloFinal,moeda(irrf.valor),`${pct(irrf.aliquotaEfetiva)} do bruto`],
  ];
  return <section className="panel chart-panel"><div className="chart-head"><div><h2>O caminho do imposto de renda</h2><p>Da dedução escolhida ao valor retido.</p></div></div>
   <div className="table-wrap"><table><thead><tr><th>Etapa</th><th>Valor</th><th>Como</th></tr></thead><tbody>
