@@ -94,7 +94,8 @@ export type Resultado={
  total:number;
 };
 
-function dataValida(texto:unknown):texto is string{
+/** Data no formato AAAA-MM-DD que existe no calendário. */
+export function dataValida(texto:unknown):texto is string{
  if(typeof texto!=='string'||!DATA_ISO.test(texto))return false;
  const data=new Date(texto+'T00:00:00Z');
  return !Number.isNaN(data.getTime())&&data.toISOString().slice(0,10)===texto;
