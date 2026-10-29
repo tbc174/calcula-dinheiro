@@ -5,6 +5,7 @@ import datetime as dt
 import http.client
 import json
 import math
+import pathlib
 import re
 import sys
 import time
@@ -236,8 +237,26 @@ def check_sitemap(response):
     expected = {FINAL_ORIGIN + path for path in EXPECTED_PATHS}
     require(len(entries) == 12 and len(set(locations)) == 12 and set(locations) == expected,
             "/sitemap.xml: esperadas as 12 URLs únicas do domínio final, incluindo Contato")
-    require(all(node.findtext(namespace + "lastmod", "") == REVISED for node in entries),
-            "/sitemap.xml: lastmod diferente de " + REVISED)
+    expected_lastmod = expected_lastmods()
+    for node in entries:
+        path = urllib.parse.urlparse(node.findtext(namespace + "loc", "")).path
+        lastmod = node.findtext(namespace + "lastmod", "")
+        require(lastmod == expected_lastmod[path],
+                "/sitemap.xml: lastmod de %s é %s; esperado %s" % (path, lastmod, expected_lastmod[path]))
+
+
+def expected_lastmods():
+    """Data esperada no <lastmod> de cada URL: a revisão da própria calculadora (revisadoEm em lib/conteudo.ts,
+    lido do pacote desta release) e, nas outras páginas, a data do site."""
+    lastmods = {path: REVISED for path in EXPECTED_PATHS}
+    content = pathlib.Path(__file__).resolve().parent.parent / "lib" / "conteudo.ts"
+    if content.is_file():
+        for slug, revised in re.findall(r"'([a-z0-9-]+)':\{revisadoEm:'(\d{4}-\d{2}-\d{2})'", content.read_text(encoding="utf-8")):
+            require("/" + slug in lastmods, "lib/conteudo.ts: calculadora %s fora das 12 URLs esperadas" % slug)
+            require(valid_date(revised) and revised <= dt.date.today().isoformat(),
+                    "lib/conteudo.ts: revisadoEm de %s inválido ou no futuro (%s)" % (slug, revised))
+            lastmods["/" + slug] = revised
+    return lastmods
 
 
 def number(value):
