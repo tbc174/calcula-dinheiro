@@ -1,12 +1,13 @@
 # Calcula Dinheiro
 
-Nove calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
+Dez calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
 
 ## Ferramentas
 - Juros compostos com aportes e comparação de cenários.
 - Porcentagem, descontos, aumentos e variações.
 - À vista ou parcelado.
 - Financiamento: SAC ou Price, com amortização extra.
+- Empréstimo: parcela pela Price, juros no total e CET com IOF e tarifa (alíquotas do IOF com data de conferência), e o mesmo empréstimo em outros prazos.
 - Quanto rende: poupança, CDB, LCI ou LCA e Tesouro Selic, líquidos de IOF, imposto e custódia.
 - Salário líquido: INSS por faixa e imposto de renda com dependentes, desconto simplificado e a redução da Lei 15.270/2025 (tabelas de 2026, com data de validade).
 - Quanto guardar por mês.
