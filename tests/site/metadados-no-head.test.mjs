@@ -21,7 +21,7 @@ const agentes={
  googlebot:'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/120.0.0.0 Safari/537.36',
  chrome:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
 };
-const paginas=['/','/quanto-guardar-por-mes','/financiamento','/quanto-rende','/salario-liquido','/decimo-terceiro','/rescisao','/emprestimo','/sobre'];
+const paginas=['/','/quanto-guardar-por-mes','/financiamento','/quanto-rende','/salario-liquido','/decimo-terceiro','/rescisao','/ferias','/emprestimo','/sobre'];
 
 function portaLivre(){return new Promise((res,rej)=>{const s=net.createServer();s.listen(0,'127.0.0.1',()=>{const {port}=s.address();s.close(()=>res(port))});s.on('error',rej)})}
 function baixar(porta,caminho,agente,host){return new Promise((res,rej)=>{const req=http.request({host:'127.0.0.1',port:porta,path:caminho,headers:{'user-agent':agente,host,accept:'text/html'}},r=>{let corpo='';r.setEncoding('utf8');r.on('data',d=>corpo+=d);r.on('end',()=>res({status:r.statusCode,corpo}))});req.on('error',rej);req.end()})}
@@ -71,6 +71,8 @@ test('título, description e canonical ficam dentro do <head> para robôs e nave
   if(caminho==='/decimo-terceiro')for(const trecho of ['13º','1ª parcela','2ª parcela','INSS','Imposto de renda','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
   // Rescisão (Tarefa 20): as verbas, a multa do FGTS e os descontos renderizados no servidor, com a frase de honestidade.
   if(caminho==='/rescisao')for(const trecho of ['Saldo de salário','Aviso prévio','13º','Férias','Multa','FGTS','INSS','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
+  // Férias (Tarefa 21): as linhas do recibo e os descontos renderizados no servidor, com a frase de honestidade.
+  if(caminho==='/ferias')for(const trecho of ['Férias','Terço constitucional','abono','13º','INSS','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
   // Empréstimo: o CET e o IOF têm de estar no HTML servido (é o que a página promete no título), com a frase de honestidade.
   if(caminho==='/emprestimo')for(const trecho of ['CET','IOF','Resolução CMN','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
  }
