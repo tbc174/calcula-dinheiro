@@ -23,7 +23,7 @@ CONTACT = "contato@tickerlab.com.br"
 REVISED = "2026-10-25"
 ADS_TEXT = "google.com, pub-4178012487609221, DIRECT, f08c47fec0942fa0\n"
 EXPECTED_PATHS = {
-    "/", "/juros-compostos", "/porcentagem", "/a-vista-ou-parcelado",
+    "/", "/juros-compostos", "/porcentagem", "/a-vista-ou-parcelado", "/financiamento",
     "/quanto-guardar-por-mes", "/correcao-ipca", "/conversor-de-moedas",
     "/sobre", "/metodologia", "/privacidade", "/termos", "/contato",
 }
@@ -235,8 +235,8 @@ def check_sitemap(response):
     entries = root.findall(namespace + "url")
     locations = [node.findtext(namespace + "loc", "") for node in entries]
     expected = {FINAL_ORIGIN + path for path in EXPECTED_PATHS}
-    require(len(entries) == 12 and len(set(locations)) == 12 and set(locations) == expected,
-            "/sitemap.xml: esperadas as 12 URLs únicas do domínio final, incluindo Contato")
+    require(len(entries) == 13 and len(set(locations)) == 13 and set(locations) == expected,
+            "/sitemap.xml: esperadas as 13 URLs únicas do domínio final, incluindo Contato")
     expected_lastmod = expected_lastmods()
     for node in entries:
         path = urllib.parse.urlparse(node.findtext(namespace + "loc", "")).path
@@ -252,7 +252,7 @@ def expected_lastmods():
     content = pathlib.Path(__file__).resolve().parent.parent / "lib" / "conteudo.ts"
     if content.is_file():
         for slug, revised in re.findall(r"'([a-z0-9-]+)':\{revisadoEm:'(\d{4}-\d{2}-\d{2})'", content.read_text(encoding="utf-8")):
-            require("/" + slug in lastmods, "lib/conteudo.ts: calculadora %s fora das 12 URLs esperadas" % slug)
+            require("/" + slug in lastmods, "lib/conteudo.ts: calculadora %s fora das 13 URLs esperadas" % slug)
             require(valid_date(revised) and revised <= dt.date.today().isoformat(),
                     "lib/conteudo.ts: revisadoEm de %s inválido ou no futuro (%s)" % (slug, revised))
             lastmods["/" + slug] = revised
@@ -375,7 +375,7 @@ def run(client):
     redirect = client.get(redirect_path, host="www." + FINAL_HOST)
     require(redirect.status == 308 and redirect.headers.get("Location") == FINAL_ORIGIN + redirect_path,
             "www: esperado 308 para raiz preservando caminho e parâmetros")
-    print("OK: sitemap com 12 URLs, robots por Host e redirect www.", flush=True)
+    print("OK: sitemap com 13 URLs, robots por Host e redirect www.", flush=True)
 
     favicon = client.get("/favicon.svg")
     response_ok(favicon, ("image/svg+xml",))

@@ -46,3 +46,6 @@ yarn-error.log*
 
 /.openai/
 /releases/
+
+# Python auxiliar (scripts/)
+__pycache__/
