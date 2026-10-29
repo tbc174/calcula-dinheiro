@@ -5,6 +5,7 @@ export const ferramentas = [
  {slug:'financiamento',titulo:'Financiamento: SAC ou Price',chamada:'Veja a parcela antes de assinar.',descricao:'Compare SAC e Price: primeira e última parcela, juros totais e o efeito de amortizar antes.',categoria:'Comprar e comparar',icone:'financiamento'},
  {slug:'quanto-rende',titulo:'Quanto rende',chamada:'Compare o que sobra no fim.',descricao:'Poupança, CDB, LCI ou LCA e Tesouro Selic no mesmo prazo, já com IOF, imposto de renda e custódia.',categoria:'Guardar e planejar',icone:'quanto-rende'},
  {slug:'quanto-guardar-por-mes',titulo:'Quanto guardar por mês',chamada:'Dê um plano à sua meta.',descricao:'Descubra quanto separar por mês para chegar ao valor que você quer.',categoria:'Guardar e planejar',icone:'meta'},
+ {slug:'salario-liquido',titulo:'Salário líquido',chamada:'O que cai na conta, desconto por desconto.',descricao:'Do bruto ao líquido com as tabelas de 2026: INSS por faixa, imposto de renda com dependentes ou desconto simplificado e a redução para quem ganha até R$ 7.350.',categoria:'Entender os valores',icone:'salario'},
  {slug:'correcao-ipca',titulo:'Correção pelo IPCA',chamada:'O tempo muda os preços.',descricao:'Atualize um valor pela inflação e entenda o efeito sobre seu poder de compra.',categoria:'Entender os valores',icone:'inflacao'},
  {slug:'conversor-de-moedas',titulo:'Conversor de moedas',chamada:'Um valor, outra moeda.',descricao:'Converta real, dólar e euro com cotação de referência e data à vista.',categoria:'Entender os valores',icone:'moedas'},
 ] as const;
