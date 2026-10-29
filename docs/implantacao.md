@@ -44,6 +44,7 @@ Operações feitas no navegador público, com resultados comparados às fórmula
 | Comparação de juros | Mais R$ 100/mês no mesmo prazo | R$ 3.663,33; diferença R$ 1.268,25; gráfico no mês 2 mostrou R$ 1.221,10 e R$ 1.422,10 |
 | Porcentagem | Desconto de 20% sobre 200 | 160,00; economia 40,00 e passos da conta corretos |
 | À vista ou parcelado | R$ 900 à vista; entrada R$ 200 + 4 × R$ 200 | Parcelado R$ 1.000,00; diferença R$ 100,00/11,11% sobre à vista |
+| Financiamento | R$ 300.000, 1% ao mês, 360 meses | Price R$ 3.085,84 fixa; SAC de R$ 3.833,33 a R$ 841,67; diferença de juros R$ 269.401,60 |
 | Quanto guardar | Meta R$ 1.200, inicial zero, sem juros, 12 meses | R$ 100,00/mês; alternativa de 18 meses R$ 66,67/mês |
 | IPCA | R$ 1.000, setembro/2026 nas duas pontas, 0,82% | R$ 1.008,20; gráfico e explicação de mês único coerentes |
 | Conversor | US$ 200 × PTAX 5,0377 de 23/10 | R$ 1.007,54; equivalências e metodologia conferidas |

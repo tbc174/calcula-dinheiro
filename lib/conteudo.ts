@@ -23,6 +23,20 @@ export const conteudos:Record<Slug,Conteudo>={
     "leitura": "Os totais são iguais. A comparação não considera o rendimento do dinheiro guardado nem as datas dos pagamentos. Confira também como cada opção cabe no seu orçamento."
   }
 ],atencao:'A ferramenta compara somas nominais. Não calcula CET, valor presente, rendimento do dinheiro guardado, inflação ou custos que não tenham sido incluídos nos preços. Parcelas precisam ter o mesmo valor.'},
+ // RASCUNHO (Claude, 28/10/2026): texto público é da Marketing e sai só com o "pode" do Tiago (nível 1). Os números
+ // dos exemplos saíram da conta (tests/financiamento.test.mjs confere os mesmos valores).
+ 'financiamento':{revisadoEm:'2026-10-28',
+  titulo:'Simulador de financiamento: SAC ou Price, parcela a parcela',
+  descricaoSEO:'Compare SAC e Price no financiamento: primeira e última parcela, total de juros e o efeito de amortizar antes. Simulador grátis, sem cadastro.',
+  introducao:'Num financiamento, o que muda entre SAC e Price é como a dívida é paga ao longo do tempo. No SAC, a parcela começa maior e cai todo mês; na Price, ela é igual do começo ao fim. Ver os dois lado a lado, com o total de juros, ajuda a entender o que está em jogo antes de assinar.',
+  passos:['Informe o valor financiado (o preço menos a entrada), a taxa de juros e o prazo. A taxa anual é convertida para a mensal equivalente.','Compare a primeira e a última parcela, o total de juros e o total pago de cada sistema. Use o controle do gráfico para ver cada mês.','Se pretende pagar a mais em algum mês, escolha se quer reduzir o prazo ou a parcela e veja o efeito nos juros.'],
+  exemplos:[
+   {titulo:'R$ 300 mil em 30 anos a 1% ao mês: SAC ou Price?',conta:'Price: 360 parcelas de R$ 3.085,84; juros de R$ 810.901,60. SAC: a parcela começa em R$ 3.833,33 e termina em R$ 841,67; juros de R$ 541.500,00.',leitura:'A Price é R$ 747,50 mais barata no início, mas custa R$ 269.401,60 a mais em juros ao longo do contrato. O SAC exige mais folga no orçamento nos primeiros anos.'},
+   {titulo:'R$ 200 mil em 20 anos a 10,5% ao ano',conta:'Taxa mensal equivalente: 0,8355%. Price: R$ 1.933,51 por mês; juros de R$ 264.043,50. SAC: de R$ 2.504,36 a R$ 840,30; juros de R$ 201.359,25.',leitura:'O SAC pede R$ 570,85 a mais por mês no começo e economiza R$ 62.684,24 em juros. A taxa anual não é dividida por 12: a conversão usa a equivalência composta.'},
+   {titulo:'Amortizar R$ 50 mil no 12º mês da Price de R$ 300 mil',conta:'Mantendo a parcela de R$ 3.085,84 e reduzindo o prazo, o financiamento termina no mês 178; juros de R$ 296.604,08.',leitura:'São 182 parcelas a menos e R$ 514.297,53 a menos em juros, porque o pagamento extra abate o saldo sobre o qual os juros são calculados. Reduzir a parcela em vez do prazo economiza menos.'}
+  ],
+  atencao:'A simulação usa taxa constante e não inclui seguros (MIP e DFI), taxa de administração, IOF nem a correção do saldo pela TR ou pelo IPCA: a parcela do contrato pode ser maior. O Custo Efetivo Total (CET) informado pelo banco é a referência para comparar propostas. Não é previsão nem recomendação, nem uma oferta de crédito.'
+ },
  'quanto-guardar-por-mes':{revisadoEm:'2026-10-26',
   titulo:'Quanto guardar por mês? Calculadora de metas',
   descricaoSEO:'Calcule quanto guardar por mês para atingir sua meta. Informe quanto quer juntar, o que já tem e o prazo. Simule com ou sem juros.',

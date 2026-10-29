@@ -7,7 +7,7 @@ import {porcentagem,lerNumero} from '../lib/contas.mjs';
 import {Campo,EscopoCampos,calcular} from './comum';
 
 const grupos=[
- {titulo:'Na hora de comprar',classe:'comprar',nota:'Veja quanto a compra vai custar.',slugs:['porcentagem','a-vista-ou-parcelado'],Icon:Wallet},
+ {titulo:'Na hora de comprar',classe:'comprar',nota:'Veja quanto a compra vai custar.',slugs:['porcentagem','a-vista-ou-parcelado','financiamento'],Icon:Wallet},
  {titulo:'Para juntar dinheiro',classe:'guardar',nota:'Um plano para o que você quer fazer.',slugs:['juros-compostos','quanto-guardar-por-mes'],Icon:TrendingUp},
  {titulo:'Para comparar valores',classe:'comparar',nota:'Inflação e moedas, com a data da referência.',slugs:['correcao-ipca','conversor-de-moedas'],Icon:Percent}
 ];

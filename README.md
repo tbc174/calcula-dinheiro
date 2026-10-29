@@ -1,11 +1,12 @@
 # Calcula Dinheiro
 
-Seis calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
+Sete calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
 
 ## Ferramentas
 - Juros compostos com aportes e comparação de cenários.
 - Porcentagem, descontos, aumentos e variações.
 - À vista ou parcelado.
+- Financiamento: SAC ou Price, com amortização extra.
 - Quanto guardar por mês.
 - Correção pelo IPCA.
 - Conversor de real, dólar e euro.
@@ -27,7 +28,7 @@ Validação: `npm test`, `npx tsc --noEmit`, `npm run build` e, com o build pron
 ## Organização
 - app/: páginas e API pública de dados.
 - components/: interface, ferramentas e gráficos.
-- lib/: cálculos e regras de publicação.
+- lib/: cálculos e regras de publicação (calculadora nova: conta em `lib/calculos/<slug>.ts`, tela em `components/calculadoras/<slug>.jsx`).
 - config/publicacao.json: domínio, responsável, contato e anúncios.
 - tests/: fórmulas e publicação.
 - compose.yaml: serviço isolado no VPS.
