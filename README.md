@@ -1,12 +1,13 @@
 # Calcula Dinheiro
 
-Sete calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
+Oito calculadoras gratuitas para o dinheiro do dia a dia, em português brasileiro, com gráficos explicados, comparação de cenários e temas claro/escuro.
 
 ## Ferramentas
 - Juros compostos com aportes e comparação de cenários.
 - Porcentagem, descontos, aumentos e variações.
 - À vista ou parcelado.
 - Financiamento: SAC ou Price, com amortização extra.
+- Quanto rende: poupança, CDB, LCI ou LCA e Tesouro Selic, líquidos de IOF, imposto e custódia.
 - Quanto guardar por mês.
 - Correção pelo IPCA.
 - Conversor de real, dólar e euro.

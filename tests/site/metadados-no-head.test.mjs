@@ -21,7 +21,7 @@ const agentes={
  googlebot:'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/120.0.0.0 Safari/537.36',
  chrome:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
 };
-const paginas=['/','/quanto-guardar-por-mes','/financiamento','/sobre'];
+const paginas=['/','/quanto-guardar-por-mes','/financiamento','/quanto-rende','/sobre'];
 
 function portaLivre(){return new Promise((res,rej)=>{const s=net.createServer();s.listen(0,'127.0.0.1',()=>{const {port}=s.address();s.close(()=>res(port))});s.on('error',rej)})}
 function baixar(porta,caminho,agente,host){return new Promise((res,rej)=>{const req=http.request({host:'127.0.0.1',port:porta,path:caminho,headers:{'user-agent':agente,host,accept:'text/html'}},r=>{let corpo='';r.setEncoding('utf8');r.on('data',d=>corpo+=d);r.on('end',()=>res({status:r.statusCode,corpo}))});req.on('error',rej);req.end()})}
@@ -57,12 +57,14 @@ test('título, description e canonical ficam dentro do <head> para robôs e nave
   const tipos=doSite[0]['@graph'].map(n=>n['@type']).sort();
   assert.deepEqual(tipos,['Organization','WebSite'],`${caminho} (${nome}): WebSite e Organization`);
   assert.equal(doSite[0]['@graph'].find(n=>n['@type']==='WebSite').url,config.origem+'/',`${caminho} (${nome}): URL do site`);
-  // FAQPage só quando a página mostra perguntas (hoje só a de financiamento tem): sem perguntas na tela, nenhum FAQPage pode sair.
+  // FAQPage só quando a página mostra perguntas (hoje as de financiamento e quanto rende têm): sem perguntas na tela, nenhum FAQPage pode sair.
   const faqs=esquemas.filter(e=>e['@type']==='FAQPage');
   const perguntasNaTela=(corpo.match(/class="guia-perguntas"/g)||[]).length;
   assert.equal(faqs.length,perguntasNaTela>0?1:0,`${caminho} (${nome}): FAQPage só com perguntas na tela`);
   // Calculadora de financiamento (Tarefa 9): a tela chega renderizada no servidor, com os dois sistemas e a frase de honestidade.
   if(caminho==='/financiamento')for(const trecho of ['SAC','Price','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
+  // Calculadora quanto rende (Tarefa 9): as quatro opções e a frase de honestidade chegam renderizadas no servidor.
+  if(caminho==='/quanto-rende')for(const trecho of ['CDB','LCI ou LCA','Tesouro Selic','Poupança','não é previsão nem recomendação'])assert.ok(corpo.includes(trecho),`${caminho} (${nome}): "${trecho}" no HTML`);
  }
  // Sitemap (Tarefa 10): cada calculadora com a sua data de revisão, as outras páginas com a do site.
  const sitemap=await baixar(porta,'/sitemap.xml',agentes.googlebot,hostFinal);

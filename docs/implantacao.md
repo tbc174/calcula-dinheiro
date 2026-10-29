@@ -45,6 +45,7 @@ Operações feitas no navegador público, com resultados comparados às fórmula
 | Porcentagem | Desconto de 20% sobre 200 | 160,00; economia 40,00 e passos da conta corretos |
 | À vista ou parcelado | R$ 900 à vista; entrada R$ 200 + 4 × R$ 200 | Parcelado R$ 1.000,00; diferença R$ 100,00/11,11% sobre à vista |
 | Financiamento | R$ 300.000, 1% ao mês, 360 meses | Price R$ 3.085,84 fixa; SAC de R$ 3.833,33 a R$ 841,67; diferença de juros R$ 269.401,60 |
+| Quanto rende | R$ 10.000, 2 anos, CDI 14,65%, CDB 100%, LCI 90%, poupança pela regra | LCI R$ 12.790,17; CDB R$ 12.672,93; Tesouro Selic R$ 12.666,64 (custódia R$ 6,29); poupança R$ 11.271,60; empate em 103,82% do CDI; com 15 dias, IOF de R$ 28,17 e poupança sem rendimento |
 | Quanto guardar | Meta R$ 1.200, inicial zero, sem juros, 12 meses | R$ 100,00/mês; alternativa de 18 meses R$ 66,67/mês |
 | IPCA | R$ 1.000, setembro/2026 nas duas pontas, 0,82% | R$ 1.008,20; gráfico e explicação de mês único coerentes |
 | Conversor | US$ 200 × PTAX 5,0377 de 23/10 | R$ 1.007,54; equivalências e metodologia conferidas |
