@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,consentimentoValido,aceitaTcf,tokenWebAnalytics,beaconWebAnalytics} from '../lib/publicacao.mjs';
+import {publicarHost,redirecionarDominio,normalizarPublisher,textoAds,anunciosProntos,consentimentoValido,aceitaTcf,tokenWebAnalytics,beaconWebAnalytics,linkPatrocinado,ATRIBUTOS_DO_LINK_PATROCINADO} from '../lib/publicacao.mjs';
+import {ferramentas} from '../lib/ferramentas.ts';
+import config from '../config/publicacao.json' with {type:'json'};
 const origem='https://calculadinheiro.com.br';
 test('indexação somente no domínio final, sem liberar prévia ou host parecido',()=>{
  assert.equal(publicarHost('calculadinheiro.com.br',origem),true);
@@ -42,4 +44,25 @@ test('medição de visitas só com token bem formado; sem token, nenhum beacon',
  assert.equal(tokenWebAnalytics(token),token);
  assert.deepEqual(beaconWebAnalytics(token),{src:'https://static.cloudflareinsights.com/beacon.min.js',dados:'{"token":"0123456789abcdef0123456789abcdef"}'});
  for(const t of ['',null,undefined,'ABCDEF','0123456789abcdef0123456789abcde','0123456789abcdef0123456789abcdef1','x"><script>'])assert.equal(beaconWebAnalytics(t),null,String(t));
+});
+test('link patrocinado só com modo ativo, calculadora configurada, texto curto e URL https',()=>{
+ const link={texto:'Onde abrir um CDB',programa:'Lomadee',url:'https://parceiro.example/cdb?ref=1'};
+ const p={modo:'ativo',porCalculadora:{'quanto-rende':link}};
+ assert.deepEqual(linkPatrocinado(p,'quanto-rende'),link);
+ assert.equal(linkPatrocinado(p,'financiamento'),null,'calculadora sem link configurado');
+ assert.equal(linkPatrocinado({...p,modo:'desligado'},'quanto-rende'),null,'modo desligado');
+ assert.equal(linkPatrocinado(null,'quanto-rende'),null,'sem configuração');
+ const com=patch=>linkPatrocinado({...p,porCalculadora:{'quanto-rende':{...link,...patch}}},'quanto-rende');
+ for(const url of ['http://parceiro.example/cdb','javascript:alert(1)','','/cdb',null])assert.equal(com({url}),null,String(url));
+ for(const texto of ['','ab','x\n<script>','a'.repeat(81)])assert.equal(com({texto}),null,JSON.stringify(texto));
+ assert.equal(com({programa:''}),null,'programa vazio');
+});
+test('a configuração do repositório não liga link de afiliado em nenhuma calculadora (entra só depois do "Pronto" do AdSense)',()=>{
+ assert.equal(config.parceiros.modo,'desligado');
+ for(const f of ferramentas)assert.equal(linkPatrocinado(config.parceiros,f.slug),null,f.slug);
+});
+test('link patrocinado é marcado como pago para o Google e abre em nova aba sem acesso à janela',()=>{
+ assert.match(ATRIBUTOS_DO_LINK_PATROCINADO.rel,/\bsponsored\b/);
+ assert.match(ATRIBUTOS_DO_LINK_PATROCINADO.rel,/\bnoopener\b/);
+ assert.equal(ATRIBUTOS_DO_LINK_PATROCINADO.target,'_blank');
 });
