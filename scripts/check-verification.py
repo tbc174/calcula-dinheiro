@@ -22,6 +22,8 @@ PUBLISHER = "ca-pub-4178012487609221"
 CONTACT = "contato@tickerlab.com.br"
 REVISED = "2026-10-25"
 ADS_TEXT = "google.com, pub-4178012487609221, DIRECT, f08c47fec0942fa0\n"
+# O modo vem da própria release: "verificacao" (anúncios desligados) ou "ativo" (depois do "Pronto" do AdSense).
+MODE = json.loads((pathlib.Path(__file__).resolve().parents[1] / "config/publicacao.json").read_text())["adsense"]["modo"]
 EXPECTED_PATHS = {
     "/", "/juros-compostos", "/porcentagem", "/a-vista-ou-parcelado", "/financiamento",
     "/emprestimo", "/quanto-rende", "/quanto-guardar-por-mes", "/salario-liquido", "/decimo-terceiro", "/rescisao", "/ferias", "/cartao-rotativo", "/correcao-ipca", "/conversor-de-moedas",
@@ -204,8 +206,8 @@ def read_page(client, path):
     for source in page.script_sources:
         lowered = source.lower()
         require("adsbygoogle" not in lowered and "fundingchoices" not in lowered,
-                path + ": script de publicidade/CMP presente em modo de verificação")
-    require(page.ad_slots == 0, path + ": bloco ins.adsbygoogle presente em modo de verificação")
+                path + ": script de publicidade/CMP no HTML do servidor (deve carregar só no navegador)")
+    require(page.ad_slots == 0, path + ": bloco ins.adsbygoogle no HTML do servidor (deve entrar só no navegador)")
     return page
 
 
@@ -352,8 +354,9 @@ def run(client):
             "Inicial: link para Contato ausente")
     require(CONTACT in privacy.visible_text and "mailto:" + CONTACT in privacy.links,
             "/privacidade: contato ausente ou incorreto")
-    require("Os anúncios estão desligados." in privacy.visible_text,
-            "/privacidade: texto de publicidade desligada ausente")
+    expected_ads_text = "Os anúncios estão desligados." if MODE == "verificacao" else "Exibimos anúncios do Google AdSense"
+    require(expected_ads_text in privacy.visible_text,
+            "/privacidade: texto de publicidade do modo " + MODE + " ausente")
     old_notices = ("O canal público de contato ainda não está disponível",
                    "O canal público de atendimento está sendo configurado")
     require(not any(notice in privacy.visible_text for notice in old_notices),

@@ -18,7 +18,7 @@ Catorze calculadoras gratuitas para o dinheiro do dia a dia, em português brasi
 - Correção pelo IPCA.
 - Conversor de real, dólar e euro.
 
-Inclui Sobre, Metodologia, Privacidade e Termos; SEO por página, sitemap com a data de revisão de cada calculadora (`revisadoEm` em `lib/conteudo.ts`), dados estruturados (WebSite e Organization em toda página; FAQPage só quando a página mostra perguntas) e robots conforme o domínio. Contato e anúncios continuam desativados até preencher os dados reais.
+Inclui Sobre, Metodologia, Privacidade e Termos; SEO por página, sitemap com a data de revisão de cada calculadora (`revisadoEm` em `lib/conteudo.ts`), dados estruturados (WebSite e Organization em toda página; FAQPage só quando a página mostra perguntas) e robots conforme o domínio. Anúncios do AdSense prontos em três posições por calculadora, desligados até o "Pronto" do Google; veja [Ativação do AdSense](docs/adsense-ativacao.md).
 
 ## Executar
 Requer Node.js >=22.13 e npm.

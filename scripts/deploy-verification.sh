@@ -142,7 +142,8 @@ with tarfile.open(archive, 'r:*') as tf:
 c = json.loads((root / 'config/publicacao.json').read_text()); a = c['adsense']
 assert c['origem'] == 'https://calculadinheiro.com.br' and c['emailContato'] == 'contato@tickerlab.com.br', 'Domínio ou contato divergente'
 assert a['publisherId'] == 'pub-4178012487609221' and a['slotRodape'] == '8432472360', 'Identificadores AdSense divergentes'
-assert a['modo'] == 'verificacao' and a['cmpValidada'] is False and a['cmpScriptUrl'] == '', 'A configuração deve permanecer em verificação'
+assert a['modo'] in ('verificacao', 'ativo'), 'Modo AdSense desconhecido'
+assert all(v == '' or (len(v) == 10 and v.isdigit()) for v in a.get('slots', {}).values()), 'Bloco AdSense malformado'
 assert (root / 'scripts/check-verification.py').is_file(), 'Validador ausente no pacote'
 print('Pacote e configuração conferidos; nova release:', root.name)
 PY
@@ -196,9 +197,11 @@ python3 "$release/scripts/check-verification.py" 'http://127.0.0.1:8082'
 python3 - "$release" "$commit" "$expected_sha" "$image" "$backup" <<'PY'
 import datetime, json, pathlib, sys
 release, commit, archive_sha, image, backup = sys.argv[1:]
-receipt = dict(commit=commit, archive_sha256=archive_sha, image=image, modo='verificacao',
+modo = json.loads(pathlib.Path(release, 'config/publicacao.json').read_text())['adsense']['modo']
+receipt = dict(commit=commit, archive_sha256=archive_sha, image=image, modo=modo,
                concluido_em=datetime.datetime.now(datetime.timezone.utc).isoformat(), backup_compose=backup)
 pathlib.Path(release, 'implantacao.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
 PY
+modo=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["adsense"]["modo"])' "$release/config/publicacao.json")
 success=1
-printf 'Implantação concluída em modo de verificação. Anúncios continuam desligados.\nCommit: %s\nRelease: %s\nBackup do Compose: %s\n' "$commit" "$release" "$backup"
+printf 'Implantação concluída (AdSense: modo %s).\nCommit: %s\nRelease: %s\nBackup do Compose: %s\n' "$modo" "$commit" "$release" "$backup"

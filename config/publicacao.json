@@ -7,8 +7,10 @@
     "publisherId": "pub-4178012487609221",
     "modo": "verificacao",
     "slotRodape": "8432472360",
-    "cmpScriptUrl": "",
-    "cmpValidada": false
+    "slots": {
+      "resultado": "",
+      "conteudo": ""
+    }
   },
   "webAnalytics": {
     "token": ""

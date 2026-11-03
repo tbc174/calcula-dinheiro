@@ -1,5 +1,9 @@
 # AdSense: publicar a configuração de verificação
 
+> Como ligar os anúncios depois do "Pronto": [adsense-ativacao.md](adsense-ativacao.md). O procedimento
+> de publicação abaixo continua valendo para os dois modos. A URL de CMP e o `cmpValidada` deixaram de existir:
+> a mensagem europeia vem do próprio `adsbygoogle.js`.
+
 ## Estado desta alteração
 
 A configuração registra o editor `pub-4178012487609221`, o bloco responsivo
