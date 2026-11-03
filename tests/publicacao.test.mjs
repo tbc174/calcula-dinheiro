@@ -66,3 +66,16 @@ test('link patrocinado é marcado como pago para o Google e abre em nova aba sem
  assert.match(ATRIBUTOS_DO_LINK_PATROCINADO.rel,/\bnoopener\b/);
  assert.equal(ATRIBUTOS_DO_LINK_PATROCINADO.target,'_blank');
 });
+
+// Regressão de 03/11/2026 (ação 6 do plano mestre): a política negava a análise de audiência com o Cloudflare Web Analytics
+// ativo, e as páginas citavam uma pessoa como responsável enquanto a conta do AdSense é da empresa.
+test('privacidade declara o Cloudflare Web Analytics e o responsável é a empresa', async () => {
+  const {readFileSync}=await import('node:fs');
+  const ler=(p)=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+  const privacidade=ler('app/privacidade/page.tsx')+ler('components/publicidade.jsx');
+  assert.match(privacidade,/Cloudflare Web Analytics/);
+  assert.doesNotMatch(privacidade,/Não usamos (ferramenta de )?análise de audiência/);
+  const {responsavel}=JSON.parse(ler('config/publicacao.json'));
+  assert.match(responsavel,/CNPJ 69\.760\.092\/0001-04/);
+  for(const p of ['app/termos/page.tsx','app/metodologia/page.tsx','components/guia.tsx'])assert.doesNotMatch(ler(p),/(é|projeto:) Tiago/);
+});
